@@ -1,0 +1,88 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode, driven by useTheme (and the inline script in index.html). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic surface tokens swap per theme; brand colours stay fixed. */
+:root {
+  --bg: #f2f5f9;
+  --surface: #ffffff;
+  --fg: #14254a;
+  --muted: #4b5a78;
+  --line: #d6deea;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0c1424;
+  --surface: #152039;
+  --fg: #eaf0f8;
+  --muted: #a3b1ca;
+  --line: #27355a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+}
+
+@theme {
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy: #14254a;
+  --color-navy-deep: #0d1a36;
+  --color-marigold: #f2b705;
+  --color-marigold-soft: #ffe7a0;
+  --color-pine: #2f5d50;
+
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-marigold;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Theme switch: the new theme grows out of the toggle as a circle (see useTheme). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
